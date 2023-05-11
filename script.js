@@ -1,22 +1,21 @@
-
-
 const itemsArray = [];
 const btnSave = document.querySelector('#btn-save');
 btnSave.addEventListener('click', saveItem);
 
-
-const inputElement = document.getElementById('inputItem');
-inputElement.addEventListener('keydown', (event) => {
-  if (event.code === 'Enter' || event.keyCode === 13) {
-    event.preventDefault(); // previne a ação padrão de inserir uma nova linha
-    saveItem(); // chama a função saveItem()
-  }
+const btnRandom = document.getElementById('btn-random');
+btnRandom.addEventListener('click', function() {
+  startSlide(document.querySelector('#slide-item-list'));
 });
 
 
+const inputElement = document.getElementById('inputItem');
+inputElement.addEventListener('keydown', function(event) {
+  if (event.key === "Enter") {
+    saveItem();
+  }
+});
 
 function saveItem() {
-  const inputElement = document.getElementById('inputItem');
   const item = inputElement.value.trim();
 
   // Verifica se o item já existe no array
@@ -46,31 +45,76 @@ function saveItem() {
 }
 
 function renderItemList() {
-    const listElement = document.getElementById('list');
-    listElement.innerHTML = '';
-  
-    itemsArray.forEach(item => {
-      const li = document.createElement('li');
-      li.textContent = item;
-      listElement.appendChild(li);
+  const itemList = document.getElementById('item-list');
+  itemList.innerHTML = "";
+
+  for (let i = 0; i < itemsArray.length; i++) {
+    const item = itemsArray[i];
+    const li = document.createElement('li');
+    li.textContent = item;
+    itemList.appendChild(li);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = "X";
+    removeBtn.addEventListener('click', function() {
+      removeItem(i);
     });
+    li.appendChild(removeBtn);
   }
+}
+
+function removeItem(index) {
+  itemsArray.splice(index, 1);
+  renderItemList();
+}
+
+function startSlide() {
+  const slide = document.getElementsById('slide');
+  const items = slide.getElementById('slide-item-list li');
 
 
-function spin() {
-    if (items.length > 0) {
-      let spinCount = Math.floor(Math.random() * items.length);
-      let spinAngle = 360 / items.length * spinCount + 360 * 10;
-      wheel.style.transform = `rotate(${spinAngle}deg)`;
-      wheel.classList.add("rotating");
-  
-      setTimeout(() => {
-        wheel.classList.remove("rotating");
-        let result = items[spinCount];
-        alert(`O item sorteado é: ${result}`);
-      }, 7000);
-    } else {
-      alert("Você precisa adicionar pelo menos um item para sortear");
+  const slideWidth = slide.offsetWidth;
+
+  let currentPosition = 0;
+  let cycleCount = 0;
+  let isAnimating = false;
+  let winnerIndex = null;
+
+  const slideInterval = setInterval(() => {
+    if (!isAnimating) {
+      isAnimating = true;
+      cycleCount++;
+
+      currentPosition -= slideWidth / 3;
+
+      slide.style.transform = `translateX(${currentPosition}px)`;
+
+      const firstItem = items[0];
+      const firstItemWidth = firstItem.offsetWidth;
+
+      if (currentPosition <= -firstItemWidth) {
+        slide.appendChild(firstItem);
+        slide.style.transition = 'none';
+        slide.style.transform = 'translateX(0)';
+        currentPosition += firstItemWidth;
+        setTimeout(() => {
+          slide.style.transition = 'transform 0.3s';
+          isAnimating = false;
+        }, 50);
+      } else {
+        setTimeout(() => {
+          isAnimating = false;
+        }, 50);
+      }
+    } else if (cycleCount >= 20) {
+      clearInterval(slideInterval);
+      slide.style.transition = 'transform 0.5s ease-out';
+      slide.style.transform = `translateX(${currentPosition + slideWidth / 6}px)`;
+      slide.addEventListener('transitionend', () => {
+        winnerIndex = Math.floor(items.length / 2);
+        const winner = items[winnerIndex];
+        alert(`O item sorteado é: ${winner.textContent}`);
+      }, { once: true });
     }
-  }
-  
+  }, 500);
+}

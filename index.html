@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Sorteio BlacKat</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <h2>Escreva os itens que você quer sortear!</h2>
 
     <div class="form-container">
-        <label for="input-item">Digite um item:</label>
-        <input type="text" id="inputItem" placeholder="Ex: Caneta">
-        <button id="btn-save">Salvar</button>
-        <p id="error-msg" class="error-msg"></p>
-      </div>
-      <div class="list-container">
-        <h2>Itens Salvos:</h2>
-        <ul id="list"></ul>
-        <button id="btn-random" class="btn-random">Sortear (0) Coisinhas</button>
-      </div>
+      <label for="input-item">Digite um item:</label>
+      <input type="text" id="inputItem" placeholder="Ex: Caneta" />
+      <button id="btn-save">Salvar</button>
+      <p id="error-msg" class="error-msg"></p>
+    </div>
+    <div class="list-container">
+      <h2>Itens Salvos:</h2>
+      <ul id="item-list"></ul>
+      <button id="btn-random" class="btn-random">Sortear</button>
+    </div>
+    <div id="slide">
+      <ul id="slide-item-list">
+        <!-- itens adicionados serão renderizados aqui -->
+      </ul>
+    </div>
+
 
     
-    </body>
-    </html>
-    
+
     <script src="script.js"></script>
+  </body>
+</html>
