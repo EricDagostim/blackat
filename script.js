@@ -28,21 +28,27 @@ function saveItem() {
 
   // Verifica se o item já existe no array
   if (itemsArray.includes(item)) {
+    const labelElement = document.getElementById("text-label");
     const errorElement = document.getElementById("error-msg");
+    labelElement.textContent = "";
     errorElement.textContent = "Este item já foi adicionado!";
     setTimeout(() => {
       errorElement.textContent = "";
-    }, 5000);
+      labelElement.textContent = "Digite um item:";
+    }, 3500);
     return;
   }
 
   // Verifica se o item está vazio
   if (item === "") {
     const errorElement = document.getElementById("error-msg");
+    const labelElement = document.getElementById("text-label");
+    labelElement.textContent = "";
     errorElement.textContent = "O item não pode ser vazio!";
     setTimeout(() => {
       errorElement.textContent = "";
-    }, 5000);
+      labelElement.textContent = "Digite um item:";
+    }, 3500);
     return;
   }
 
@@ -59,18 +65,25 @@ function renderItemList() {
   // Limpa a lista
   itemList.innerHTML = "";
 
-  // Cria um elemento <li> para cada item no array
-  for (let i = 0; i < itemsArray.length; i++) {
-    const item = itemsArray[i];
+
+  
+
+  for (let i = itemsArray.length; i > 0; i--){
+    console.log(i)
+    const item = itemsArray[i - 1];
     const li = document.createElement('li');
-    li.textContent = item;
+    li.textContent = i   +  " - " + item;
     itemList.appendChild(li);
 
     // Adiciona um botão de remoção para cada item
     const removeBtn = document.createElement('button');
-    removeBtn.textContent = "X";
+    const icon = document.createElement('i');
+    icon.classList.add("fa-solid", "fa-xmark");
+    
+    removeBtn.appendChild(icon);
+    
     removeBtn.addEventListener('click', function() {
-      removeItem(i);
+      removeItem(i - 1);
     });
     li.appendChild(removeBtn);
   }

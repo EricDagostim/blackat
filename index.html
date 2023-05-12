@@ -5,26 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Sorteio BlacKat</title>
   </head>
   <body>
-    <h2>Escreva os itens que você quer sortear!</h2>
 
-    <div class="form-container">
-      <label for="input-item">Digite um item:</label>
-      <input type="text" id="inputItem" placeholder="Ex: Caneta" />
-      <button id="btn-save">Salvar</button>
-      <p id="error-msg" class="error-msg"></p>
+    <div class="container-index">
+      <h2>Escreva os itens que você quer sortear!</h2>
+      
+      <div class="container-winner">
+        <div id="winner"></div>
+      </div>
+      
+      <div class="form-container">
+        <label  for="input-item" style="margin-bottom: 10px;"><div id="text-label">Digite um item:</div> <p id="error-msg" class="error-msg"></p></label>
+        <input type="text" id="inputItem" placeholder="Ex: Caneta" />
+        <div>
+          <button id="btn-random" class="btn-random">Sortear <i class="fa-solid fa-paw"></i></button>
+          <button id="btn-save">Salvar <i class="fa-solid fa-share"></i></button>
+        </div> 
+      </div>
     </div>
+    
     <div class="list-container">
       <h2>Itens Salvos:</h2>
+      <hr>
       <ul id="item-list"></ul>
-      <button id="btn-random" class="btn-random">Sortear</button>
+      
     </div>
-    <ul id="item-list"></ul>
-      <div class="container-winner">
-        <div id="winner">Parque da Prefa</div>
-      </div>
+
+
+      
 
     
     <script src="script.js"></script>
