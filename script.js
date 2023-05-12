@@ -1,21 +1,29 @@
+// Array para armazenar os itens
 const itemsArray = [];
+
+// Referências aos elementos do DOM
 const btnSave = document.querySelector('#btn-save');
+const btnRandom = document.getElementById('btn-random');
+const inputElement = document.getElementById('inputItem');
+const itemList = document.getElementById('item-list');
+const swiperWrapper = document.querySelector('.swiper-wrapper');
+
+// Adiciona o listener do botão "Salvar"
 btnSave.addEventListener('click', saveItem);
 
-const btnRandom = document.getElementById('btn-random');
-btnRandom.addEventListener('click', function() {
-  startSlide(document.querySelector('#slide-item-list'));
-});
+// Adiciona o listener do botão "Sortear"
+btnRandom.addEventListener('click', startSlide);
 
-
-const inputElement = document.getElementById('inputItem');
+// Adiciona o listener da tecla "Enter" no campo de input
 inputElement.addEventListener('keydown', function(event) {
   if (event.key === "Enter") {
     saveItem();
   }
 });
 
+// Função para salvar um item na lista
 function saveItem() {
+  // Obtém o valor do input e remove espaços em branco no início e no fim
   const item = inputElement.value.trim();
 
   // Verifica se o item já existe no array
@@ -38,22 +46,27 @@ function saveItem() {
     return;
   }
 
+  // Adiciona o item no array e limpa o input
   itemsArray.push(item);
   inputElement.value = "";
 
+  // Renderiza a lista de itens
   renderItemList();
 }
 
+// Função para renderizar a lista de itens
 function renderItemList() {
-  const itemList = document.getElementById('item-list');
+  // Limpa a lista
   itemList.innerHTML = "";
 
+  // Cria um elemento <li> para cada item no array
   for (let i = 0; i < itemsArray.length; i++) {
     const item = itemsArray[i];
     const li = document.createElement('li');
     li.textContent = item;
     itemList.appendChild(li);
 
+    // Adiciona um botão de remoção para cada item
     const removeBtn = document.createElement('button');
     removeBtn.textContent = "X";
     removeBtn.addEventListener('click', function() {
@@ -63,58 +76,23 @@ function renderItemList() {
   }
 }
 
+// Função para remover um item da lista
 function removeItem(index) {
   itemsArray.splice(index, 1);
   renderItemList();
 }
 
+
+
+// Função para iniciar o slide
 function startSlide() {
-  const slide = document.getElementsById('slide');
-  const items = slide.getElementById('slide-item-list li');
 
+  const winnerIndex = Math.floor(Math.random() * itemsArray.length);
+  
+  const winner = document.getElementById('winner');
+  winner.textContent = itemsArray[winnerIndex];
 
-  const slideWidth = slide.offsetWidth;
-
-  let currentPosition = 0;
-  let cycleCount = 0;
-  let isAnimating = false;
-  let winnerIndex = null;
-
-  const slideInterval = setInterval(() => {
-    if (!isAnimating) {
-      isAnimating = true;
-      cycleCount++;
-
-      currentPosition -= slideWidth / 3;
-
-      slide.style.transform = `translateX(${currentPosition}px)`;
-
-      const firstItem = items[0];
-      const firstItemWidth = firstItem.offsetWidth;
-
-      if (currentPosition <= -firstItemWidth) {
-        slide.appendChild(firstItem);
-        slide.style.transition = 'none';
-        slide.style.transform = 'translateX(0)';
-        currentPosition += firstItemWidth;
-        setTimeout(() => {
-          slide.style.transition = 'transform 0.3s';
-          isAnimating = false;
-        }, 50);
-      } else {
-        setTimeout(() => {
-          isAnimating = false;
-        }, 50);
-      }
-    } else if (cycleCount >= 20) {
-      clearInterval(slideInterval);
-      slide.style.transition = 'transform 0.5s ease-out';
-      slide.style.transform = `translateX(${currentPosition + slideWidth / 6}px)`;
-      slide.addEventListener('transitionend', () => {
-        winnerIndex = Math.floor(items.length / 2);
-        const winner = items[winnerIndex];
-        alert(`O item sorteado é: ${winner.textContent}`);
-      }, { once: true });
-    }
-  }, 500);
+  
+     
+ 
 }
